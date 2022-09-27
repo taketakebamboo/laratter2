@@ -198,4 +198,17 @@ public function store(Request $request)
             ->get();
         return view('tweet.index', compact('tweets'));
     }
+
+    public function timeline()
+    {
+        // フォローしているユーザを取得する
+        $followings = User::find(Auth::id())->followings->pluck('id')->all();
+        // 自分とフォローしている人が投稿したツイートを取得する
+        $tweets = Tweet::query()
+            ->where('user_id', Auth::id())
+            ->orWhereIn('user_id', $followings)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+        return view('tweet.index', compact('tweets'));
+    }
 }
