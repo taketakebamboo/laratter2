@@ -21,11 +21,14 @@
               @foreach ($tweets as $tweet)
               <tr class="hover:bg-grey-lighter">
                 <td class="py-4 px-6 border-b border-grey-light">
+                  <!-- 🔽 追加 -->
+                  <p class="text-left text-grey-dark">{{$tweet->user->name}}</p>
                   <a href="{{ route('tweet.show',$tweet->id) }}">
                     <h3 class="text-left font-bold text-lg text-grey-dark">{{$tweet->tweet}}</h3>
                   </a>
                   <div class="flex">
-                    <!-- 🔽 更新ボタン -->
+                    @if ($tweet->user_id === Auth::user()->id)
+                    <!-- 更新ボタン -->
                     <form action="{{ route('tweet.edit',$tweet->id) }}" method="GET" class="text-left">
                       @csrf
                       <button type="submit" class="mr-2 ml-2 text-sm hover:bg-gray-200 hover:shadow-none text-white py-1 px-2 focus:outline-none focus:shadow-outline">
@@ -44,6 +47,7 @@
                         </svg>
                       </button>
                     </form>
+                    @endif
                   </div>
                 </td>
               </tr>
